@@ -1,15 +1,5 @@
 
 using Raylib_cs;
-
-
-namespace Unit05.Game.Services
-{
-    /// <summary>
-    /// <para>Outputs the game state.</para>
-    /// <para>
-    /// The responsibility of the class of objects is to draw the game state on the screen. 
-    /// </para>
-    /// </summary>
     public class VideoService
     {
         private bool debug = false;
@@ -129,4 +119,3 @@ namespace Unit05.Game.Services
         }
 
     }
-}
