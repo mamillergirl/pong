@@ -3,7 +3,8 @@ using System;
 
 public class Actor{
 
-    private string text = "";
+    private int width = 0;
+    private int length = 0;
     private int fontSize = 15;
     private Point position = new Point(0, 0);
     private Point velocity = new Point(0, 0);
@@ -55,14 +56,7 @@ public class Actor{
         /// </summary>
         /// <param name="color">The given color.</param>
         /// <exception cref="ArgumentException">When color is null.</exception>
-        public void SetColor(Color color)
-        {
-            if (color == null)
-            {
-                throw new ArgumentException("color can't be null");
-            }
-            this.color = color;
-        }
+        
 
         /// <summary>
         /// Sets the actor's font size to the given value.
