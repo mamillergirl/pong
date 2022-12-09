@@ -13,7 +13,8 @@ namespace HelloWorld
             var Objects = new List<CollectibleObject>();
             var Random = new Random();
             
-            int TotalPoints = 300;
+            int Player1Points = 0;
+            int Player2Points = 0;
 
            
             var PlayerRectangle = new Rectangle(ScreenWidth - (ScreenWidth - 50), ScreenHeight / 2, 5, 180);
@@ -21,8 +22,7 @@ namespace HelloWorld
             var MovementSpeed = 50;
             var ballPosition = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
             var ball = new Ball(Color.WHITE, 10);
-            var randomY = Random.Next(1, 2);
-    
+            var randomY = Random.Next(1, 2);    
             var randomX = Random.Next(-1, 1);
             ball.Position = ballPosition;
 
@@ -30,6 +30,9 @@ namespace HelloWorld
 
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "GameObject");
             Raylib.SetTargetFPS(50);
+
+            var picBall2 = new picball2();
+            picBall2.Position = ballPosition;
 
             while (!Raylib.WindowShouldClose())
             {
@@ -69,6 +72,8 @@ namespace HelloWorld
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.BLACK);
 
+                //test
+                picBall2.Draw();
                 Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
                 Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
                 ball.Draw();
@@ -79,45 +84,29 @@ namespace HelloWorld
         
                
        
-                Raylib.DrawText($"Points: {TotalPoints}", 12, ScreenHeight - 30, 20, Color.WHITE);
+               
+                Raylib.DrawText($"Points: {Player1Points}", ScreenWidth - (ScreenWidth - 20), ScreenHeight - 30, 20, Color.WHITE);
+                 Raylib.DrawText($"Points: {Player2Points}", ScreenWidth - 100, ScreenHeight - 30, 20, Color.WHITE);
                 // Draw all of the objects in their current location
-                foreach (var obj in Objects) {
-                    obj.Draw();
-                    
-                    
-                }
+               
 
                 Raylib.EndDrawing();
 
-                // Move all of the objects to their next location
-                foreach (var obj in Objects) {
-                    obj.Move();
+               
+                    
+                var ballrectangle = new Rectangle(ball.Position.X, ball.Position.Y, 10, 10);
+                if (Raylib.CheckCollisionRecs(PlayerRectangle, ballrectangle)) {
+                ball.Velocity = new Vector2(1, randomY);}
+                else if (Raylib.CheckCollisionRecs(PlayerRectangle2, ballrectangle)) {
+                ball.Velocity = new Vector2(1, randomY);}
+                if (ball.Position.Y >= (ScreenHeight - 20)) {
+                    ball.Velocity = new Vector2(randomX, -1);
+                } else if (ball.Position.Y <= 0) {
+                    ball.Velocity = new Vector2(randomX , 1);
                 }
-                foreach (var obj in Objects.ToList()){
-                    var size = 20;
-                    if (obj is DaddyRock){
-                        size = 30;
-                    }
-                   else if (obj is BabyRock){
-                        size = 15;
-                    }
-                    var rectangle = new Rectangle(obj.Position.X, obj.Position.Y, size, size);
-
-                    if (Raylib.CheckCollisionRecs(PlayerRectangle, rectangle)) {
-                    TotalPoints += obj.Points;
-                    Objects.Remove(obj);}
-
                    
-                }
-                if (TotalPoints <= 0){
-                        Raylib.ClearBackground(Color.BLACK);
-                        Raylib.DrawText("Game Over", ScreenWidth / 2, ScreenHeight / 2, 20, Color.WHITE);
-
-                        Raylib.CloseWindow();
-                }
-            }
-
-            Raylib.CloseWindow();
+            
+            Raylib.CloseWindow();}
         }
     }
 }
