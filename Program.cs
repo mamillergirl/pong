@@ -1,4 +1,4 @@
-using Raylib_cs;
+﻿using Raylib_cs;
 using System.Numerics;
 
 namespace HelloWorld
@@ -17,14 +17,16 @@ namespace HelloWorld
             int Player2Points = 0;
 
            
-            var PlayerRectangle = new Rectangle(ScreenWidth - (ScreenWidth - 50), ScreenHeight / 2, 5, 180);
-            var PlayerRectangle2 = new Rectangle(ScreenWidth - 50, ScreenHeight / 2, 5, 180);
+            var player1 = new Player1(); //ScreenWidth - (ScreenWidth - 50), ScreenHeight / 2, 5, 180);
+            var player2 = new Player2(); //ScreenWidth - 50, ScreenHeight / 2, 5, 180);
+
+
             var MovementSpeed = 50;
             var ballPosition = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
             var ball = new Ball(Color.WHITE, 10);
             var randomY = Random.Next(1, 2);    
             var randomX = Random.Next(-1, 1);
-            ball.Position = ballPosition;
+            ball.Position = ballPosition; 
 
             ball.Velocity = new Vector2(randomX, randomY);
 
@@ -46,25 +48,24 @@ namespace HelloWorld
                 var whichType = Random.Next(30);
                 // Generate a random velocity for this object
                 
-               
                 var randomXstart = Random.Next(ScreenWidth);
 
                 // Each object will start about the center of the screen
                 var position = new Vector2(randomXstart, 0);
 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_W)) {
-                    PlayerRectangle.y -= MovementSpeed;
+                    player1.Position.Y -= MovementSpeed;
                 }
 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_S)) {
-                    PlayerRectangle.y += MovementSpeed;
+                    player1.Position.Y += MovementSpeed;
                 }
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_I)) {
-                    PlayerRectangle2.y -= MovementSpeed;
+                    player2.Position.Y -= MovementSpeed;
                 }
 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_K)) {
-                    PlayerRectangle2.y += MovementSpeed;
+                    player2.Position.Y += MovementSpeed;
                 }
                 
                 
@@ -74,8 +75,10 @@ namespace HelloWorld
 
                 //test
                 picBall2.Draw();
-                Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
-                Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
+                player1.Draw();
+                player2.Draw();
+                // Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
+                // Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
                 ball.Draw();
                 ball.Move();
 
