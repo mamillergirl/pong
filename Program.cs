@@ -1,36 +1,123 @@
-﻿class Program
+using Raylib_cs;
+using System.Numerics;
+
+namespace HelloWorld
+{
+    static class Program
     {
-        /// <summary>
-        /// Starts the program using the given arguments.
-        /// </summary>
-        /// <param name="args">The given arguments.</param>
-        static void Main(string[] args)
+        public static void Main()
         {
-            // create the cast
-            Cast cast = new Cast();
+
+            var ScreenHeight = 480;
+            var ScreenWidth = 800;
+            var Objects = new List<CollectibleObject>();
+            var Random = new Random();
             
+            int TotalPoints = 300;
 
            
-            cast.AddActor("playerOne", new Snake(Constants.RED, new System.Numerics.Vector2(Constants.CELL_SIZE * 10,Constants.CELL_SIZE* 10)));
-            cast.AddActor("playerTwo", new Snake(Constants.GREEN, new System.Numerics.Vector2(Constants.CELL_SIZE * 35 ,Constants.CELL_SIZE * 35)));
+            var PlayerRectangle = new Rectangle(ScreenWidth - (ScreenWidth - 50), ScreenHeight / 2, 5, 180);
+            var PlayerRectangle2 = new Rectangle(ScreenWidth - 50, ScreenHeight / 2, 5, 180);
+            var MovementSpeed = 50;
+            var ballPosition = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
+            var ball = new Ball(Color.WHITE, 10);
+            var randomY = Random.Next(1, 2);
     
+            var randomX = Random.Next(-1, 1);
+            ball.Position = ballPosition;
 
-            // create the services
-            KeyboardService keyboardService = new KeyboardService();
-            VideoService videoService = new VideoService(false);
-           
-            // create the script
-            Script script = new Script();
-            script.AddAction("input", new ControlActorsAction1(keyboardService));
-            script.AddAction("input", new ControlActorsAction2(keyboardService));
-            script.AddAction("update", new MoveActorsAction());
-            script.AddAction("update", new MakeTrailAction());
-            script.AddAction("update", new HandleCollisionsAction());
-            script.AddAction("output", new DrawActorsAction(videoService));
+            ball.Velocity = new Vector2(randomX, randomY);
 
-            // start the game
-            Director director = new Director(videoService);
-            director.StartGame(cast, script);
+            Raylib.InitWindow(ScreenWidth, ScreenHeight, "GameObject");
+            Raylib.SetTargetFPS(50);
+
+            while (!Raylib.WindowShouldClose())
+            {
+                //Add a new random object to the screen every iteration of our game loop
+                //List<int> numbers = new List<int>()
+                //{
+                //    0,1, 1, 1 ,1,2, 2, 2, 2, 2,3, 3, 3, 3, 3, 3, 3,4, 4, 4,5,6,7,8,9,10
+                //};
+                //int randIndex = Random.Next(numbers.Count);
+                //var whichType = numbers[randIndex];
+                var whichType = Random.Next(30);
+                // Generate a random velocity for this object
+                
+               
+                var randomXstart = Random.Next(ScreenWidth);
+
+                // Each object will start about the center of the screen
+                var position = new Vector2(randomXstart, 0);
+
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_W)) {
+                    PlayerRectangle.y -= MovementSpeed;
+                }
+
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_S)) {
+                    PlayerRectangle.y += MovementSpeed;
+                }
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_I)) {
+                    PlayerRectangle2.y -= MovementSpeed;
+                }
+
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_K)) {
+                    PlayerRectangle2.y += MovementSpeed;
+                }
+                
+                
+               
+                Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.BLACK);
+
+                Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
+                Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
+                ball.Draw();
+                ball.Move();
+
+
+
+        
+               
+       
+                Raylib.DrawText($"Points: {TotalPoints}", 12, ScreenHeight - 30, 20, Color.WHITE);
+                // Draw all of the objects in their current location
+                foreach (var obj in Objects) {
+                    obj.Draw();
+                    
+                    
+                }
+
+                Raylib.EndDrawing();
+
+                // Move all of the objects to their next location
+                foreach (var obj in Objects) {
+                    obj.Move();
+                }
+                foreach (var obj in Objects.ToList()){
+                    var size = 20;
+                    if (obj is DaddyRock){
+                        size = 30;
+                    }
+                   else if (obj is BabyRock){
+                        size = 15;
+                    }
+                    var rectangle = new Rectangle(obj.Position.X, obj.Position.Y, size, size);
+
+                    if (Raylib.CheckCollisionRecs(PlayerRectangle, rectangle)) {
+                    TotalPoints += obj.Points;
+                    Objects.Remove(obj);}
+
+                   
+                }
+                if (TotalPoints <= 0){
+                        Raylib.ClearBackground(Color.BLACK);
+                        Raylib.DrawText("Game Over", ScreenWidth / 2, ScreenHeight / 2, 20, Color.WHITE);
+
+                        Raylib.CloseWindow();
+                }
+            }
+
+            Raylib.CloseWindow();
         }
     }
 }
