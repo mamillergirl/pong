@@ -30,60 +30,7 @@ class CollectibleObject: ColoredObject{
     public int Points = 0;
 }
 
-class DaddyRock: CollectibleObject {
-    public int Size { get; set; }
-    
 
-    public DaddyRock(Color color, int size): base(color) {
-        Size = size;
-        Points = -50;
-    }
-
-    override public void Draw() {
-        Raylib.DrawText("O",(int)Position.X, (int)Position.Y, Size, Color);
-    
-    }    }
-
-class MiddleRock: CollectibleObject {
-    public int Size { get; set; }
-    
-
-    public MiddleRock(Color color, int size): base(color) {
-        Size = size;
-        Points = -25;
-    }
-
-    override public void Draw() {
-        Raylib.DrawText("o",(int)Position.X, (int)Position.Y, Size, Color);
-
-    }   
-}
-
-class BabyRock: CollectibleObject {
-    public int Size { get; set; }
-
-    public BabyRock(Color color, int size): base(color) {
-        Size = size;
-        Points = -5;
-    }
-
-    override public void Draw() {
-        Raylib.DrawText("o",(int)Position.X, (int)Position.Y, Size, Color);
-
-    }   
-}
-class Gem: CollectibleObject {
-    public int Size { get; set; }
-
-    public Gem(Color color, int size): base(color) {
-        Size = size;
-        Points = 25;
-    }
-
-    override public void Draw() {
-        Raylib.DrawText("*",(int)Position.X, (int)Position.Y, Size, Color);
-    }   
-}
 class Ball: CollectibleObject{
     public int Radius { get; set; }
   
@@ -117,5 +64,3 @@ class Player: CollectibleObject {
         Raylib.DrawRectangle((int)Position.X, (int)Position.Y, Width, Height, Color);
     
     }    }
-
-

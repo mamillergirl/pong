@@ -1,5 +1,5 @@
 using Raylib_cs;
-
+using System.Numerics;
 class picball2:GameObject{
     Texture2D texture;
     int picball2size = 10;
@@ -11,7 +11,7 @@ class picball2:GameObject{
         Raylib.UnloadImage(image);
     }
 
-     public Rectangle Rect() {
+    public Rectangle Rect() {
         return new Rectangle(Position.X, Position.Y, 50, 53);
     }
 

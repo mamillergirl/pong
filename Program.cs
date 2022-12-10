@@ -1,4 +1,4 @@
-﻿using Raylib_cs;
+using Raylib_cs;
 using System.Numerics;
 
 namespace HelloWorld
@@ -17,55 +17,51 @@ namespace HelloWorld
             int Player2Points = 0;
 
            
-            var player1 = new Player1(); //ScreenWidth - (ScreenWidth - 50), ScreenHeight / 2, 5, 180);
-            var player2 = new Player2(); //ScreenWidth - 50, ScreenHeight / 2, 5, 180);
-
-
-            var MovementSpeed = 50;
+            var PlayerRectangle = new Rectangle(ScreenWidth - (ScreenWidth - 50), ScreenHeight / 100, 5, 180);
+            var PlayerRectangle2 = new Rectangle(ScreenWidth - 50, ScreenHeight / 100, 5, 180);
+            var MovementSpeed = 5;
             var ballPosition = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
-            var ball = new Ball(Color.WHITE, 10);
-            var randomY = Random.Next(1, 2);    
-            var randomX = Random.Next(-1, 1);
-            ball.Position = ballPosition; 
-
-            ball.Velocity = new Vector2(randomX, randomY);
 
             Raylib.InitWindow(ScreenWidth, ScreenHeight, "GameObject");
-            Raylib.SetTargetFPS(50);
-
+            Raylib.SetTargetFPS(250); 
+            var randomY = Random.Next(1, 2);
+            var velocityx = new List<int>{-1, 1};
+          
+            int index = Random.Next(velocityx.Count);
+            var randomX = velocityx[index];
             var picBall2 = new picball2();
+            
             picBall2.Position = ballPosition;
+            
+            picBall2.Position = ballPosition;
+
+            picBall2.Velocity = new Vector2(randomX, randomY);
+
+            
 
             while (!Raylib.WindowShouldClose())
             {
-                //Add a new random object to the screen every iteration of our game loop
-                //List<int> numbers = new List<int>()
-                //{
-                //    0,1, 1, 1 ,1,2, 2, 2, 2, 2,3, 3, 3, 3, 3, 3, 3,4, 4, 4,5,6,7,8,9,10
-                //};
-                //int randIndex = Random.Next(numbers.Count);
-                //var whichType = numbers[randIndex];
-                var whichType = Random.Next(30);
-                // Generate a random velocity for this object
+            
+                randomY = Random.Next(1, 2);
+                velocityx = new List<int>{-1, 1};
+          
+                index = Random.Next(velocityx.Count);
+                randomX = velocityx[index];
+               
                 
-                var randomXstart = Random.Next(ScreenWidth);
-
-                // Each object will start about the center of the screen
-                var position = new Vector2(randomXstart, 0);
-
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_W)) {
-                    player1.Position.Y -= MovementSpeed;
+                    PlayerRectangle.y -= MovementSpeed;
                 }
 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_S)) {
-                    player1.Position.Y += MovementSpeed;
+                    PlayerRectangle.y += MovementSpeed;
                 }
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_I)) {
-                    player2.Position.Y -= MovementSpeed;
+                    PlayerRectangle2.y -= MovementSpeed;
                 }
 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_K)) {
-                    player2.Position.Y += MovementSpeed;
+                    PlayerRectangle2.y += MovementSpeed;
                 }
                 
                 
@@ -73,21 +69,16 @@ namespace HelloWorld
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.BLACK);
 
-                //test
+                Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
+                Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
                 picBall2.Draw();
-                player1.Draw();
-                player2.Draw();
-                // Raylib.DrawRectangleRec(PlayerRectangle, Color.PINK);
-                // Raylib.DrawRectangleRec(PlayerRectangle2, Color.PINK);
-                ball.Draw();
-                ball.Move();
+                picBall2.Move();
 
 
 
         
                
        
-               
                 Raylib.DrawText($"Points: {Player1Points}", ScreenWidth - (ScreenWidth - 20), ScreenHeight - 30, 20, Color.WHITE);
                  Raylib.DrawText($"Points: {Player2Points}", ScreenWidth - 100, ScreenHeight - 30, 20, Color.WHITE);
                 // Draw all of the objects in their current location
@@ -97,19 +88,32 @@ namespace HelloWorld
 
                
                     
-                var ballrectangle = new Rectangle(ball.Position.X, ball.Position.Y, 10, 10);
+                var ballrectangle = new Rectangle(picBall2.Position.X, picBall2.Position.Y, 10, 10);
                 if (Raylib.CheckCollisionRecs(PlayerRectangle, ballrectangle)) {
-                ball.Velocity = new Vector2(1, randomY);}
+                picBall2.Velocity = new Vector2(1, randomY);}
                 else if (Raylib.CheckCollisionRecs(PlayerRectangle2, ballrectangle)) {
-                ball.Velocity = new Vector2(1, randomY);}
-                if (ball.Position.Y >= (ScreenHeight - 20)) {
-                    ball.Velocity = new Vector2(randomX, -1);
-                } else if (ball.Position.Y <= 0) {
-                    ball.Velocity = new Vector2(randomX , 1);
+                picBall2.Velocity = new Vector2(-1, randomY);}
+                if (picBall2.Position.Y >= (ScreenHeight - 20)) {
+                    picBall2.Velocity = new Vector2(randomX, -1);
+                } else if (picBall2.Position.Y <= 0) {
+                    picBall2.Velocity = new Vector2(randomX , 1);
+                }
+                if (picBall2.Position.X >= (ScreenWidth)) {
+                    Player1Points += 1;
+                    picBall2.Position = ballPosition;
+                    picBall2.Velocity = new Vector2(randomX , randomY);
+                } else if (picBall2.Position.X <= 0) {
+                    Player2Points += 1;
+                    picBall2.Position = ballPosition;
+                    picBall2.Velocity = new Vector2(randomX , randomY);
                 }
                    
-            
-            Raylib.CloseWindow();}
+                
+                
+            }
+
+            Raylib.CloseWindow();
         }
     }
 }
+                                        
