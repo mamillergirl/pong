@@ -1,4 +1,4 @@
-using Raylib_cs;
+﻿using Raylib_cs;
 using System.Numerics;
 
 namespace HelloWorld
@@ -22,7 +22,7 @@ namespace HelloWorld
             var MovementSpeed = 5;
             var ballPosition = new Vector2(ScreenWidth / 2, ScreenHeight / 2);
 
-            Raylib.InitWindow(ScreenWidth, ScreenHeight, "GameObject");
+            Raylib.InitWindow(ScreenWidth, ScreenHeight, "Pong Game ft Teach");
             Raylib.SetTargetFPS(250); 
             var randomY = Random.Next(1, 2);
             var velocityx = new List<int>{-1, 1};
