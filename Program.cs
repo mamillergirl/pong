@@ -10,7 +10,6 @@ namespace HelloWorld
 
             var ScreenHeight = 480;
             var ScreenWidth = 800;
-            var Objects = new List<CollectibleObject>();
             var Random = new Random();
             
             int Player1Points = 0;
@@ -44,9 +43,10 @@ namespace HelloWorld
             
                 randomY = Random.Next(1, 2);
                 velocityx = new List<int>{-1, 1};
-          
                 index = Random.Next(velocityx.Count);
+
                 randomX = velocityx[index];
+
                
                 
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_W)) {
